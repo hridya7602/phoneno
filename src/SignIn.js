@@ -1,16 +1,16 @@
-import { CgSpinner } from "react-icons/cg";
-import OtpInput from "otp-input-react";
-import { useState } from "react";
-import PhoneInput from "react-phone-input-2";
-import "react-phone-input-2/lib/style.css";
-import { auth } from "./firebase.config";
-import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
-import { toast, Toaster } from "react-hot-toast";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import React, { useState } from 'react';
+import { CgSpinner } from 'react-icons/cg';
+import OtpInput from 'otp-input-react';
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
+import { auth } from './firebase.config';
+import { RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth';
+import { toast, Toaster } from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 const SignIn = ({ setUser }) => {
-  const [otp, setOtp] = useState("");
-  const [ph, setPh] = useState("");
+  const [otp, setOtp] = useState('');
+  const [ph, setPh] = useState('');
   const [loading, setLoading] = useState(false);
   const [showOTP, setShowOTP] = useState(false);
   const navigate = useNavigate(); // Initialize useNavigate
@@ -18,13 +18,13 @@ const SignIn = ({ setUser }) => {
   const onCaptchVerify = () => {
     if (!window.recaptchaVerifier) {
       window.recaptchaVerifier = new RecaptchaVerifier(
-        "recaptcha-container",
+        'recaptcha-container',
         {
-          size: "invisible",
+          size: 'invisible',
           callback: () => {
             onSignup();
           },
-          "expired-callback": () => {},
+          'expired-callback': () => {},
         },
         auth
       );
@@ -36,14 +36,14 @@ const SignIn = ({ setUser }) => {
     onCaptchVerify();
 
     const appVerifier = window.recaptchaVerifier;
-    const formatPh = "+" + ph;
+    const formatPh = '+' + ph;
 
     signInWithPhoneNumber(auth, formatPh, appVerifier)
       .then((confirmationResult) => {
         window.confirmationResult = confirmationResult;
         setLoading(false);
         setShowOTP(true);
-        toast.success("OTP sent successfully!");
+        toast.success('OTP sent successfully!');
       })
       .catch((error) => {
         console.log(error);
@@ -59,7 +59,7 @@ const SignIn = ({ setUser }) => {
         console.log(res);
         setUser(res.user);
         setLoading(false);
-        navigate("/userpage"); // Navigate to user page
+        navigate('/ScanPage'); // Navigate to camera page upon successful OTP verification
       })
       .catch((err) => {
         console.log(err);
@@ -98,8 +98,8 @@ const SignIn = ({ setUser }) => {
           <label className="font-sans font-semibold text-[32px] leading-[44px] text-black text-center py-4 mb-10 whitespace-pre-line">
             Enter your phone<br />number
           </label>
-          <PhoneInput country={"in"} value={ph} onChange={setPh} className="w-full mb-6" />
-          <div className="mt-6"> {/* This div adds space before the button */}
+          <PhoneInput country={'in'} value={ph} onChange={setPh} className="w-full mb-6" />
+          <div className="mt-6">
             <button
               onClick={onSignup}
               className="bg-emerald-600 w-full flex gap-1 items-center justify-center py-2.5 text-white rounded-full"
